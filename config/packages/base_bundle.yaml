@@ -1,0 +1,15 @@
+parameters:
+  mailer_user: armando.villanueva@garagelabs.cl
+
+dsarhoya_base:
+  serviceName: "Diario Online"
+  routes:
+    ROLE_SUPER_ADMIN: { route: base_bundle_superadmin_default_index }
+    ROLE_USER: { route: indexUser }
+  uniqueUser: false
+  stickyUrls: false
+  classes:
+    user: { class: App\Entity\User }
+    profile: { class: App\Entity\Profile }
+    company: { class: App\Entity\Company }
+    action: { class: App\Entity\Action }
