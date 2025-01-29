@@ -1,0 +1,17 @@
+home:
+  path: /
+  defaults: { _controller: dsarhoya\BaseBundle\Controller\V2\Pub\SecurityController::login }
+
+base_bundle_pub:
+  resource: "@dsarhoyaBaseBundle/Controller/V2/Pub"
+  type: annotation
+
+base_bundle_secured:
+  resource: "@dsarhoyaBaseBundle/Controller/V2/Secured"
+  type: annotation
+  prefix: /secured
+
+base_bundle_superadmin:
+  resource: "@dsarhoyaBaseBundle/Controller/V2/Superadmin"
+  type: annotation
+  prefix: /secured/superadmin
