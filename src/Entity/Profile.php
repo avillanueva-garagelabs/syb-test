@@ -8,33 +8,24 @@ use Doctrine\ORM\Mapping as ORM;
 use dsarhoya\BaseBundle\Entity\BaseProfile;
 use dsarhoya\BaseBundle\Model\EntityMappers\BaseProfileInterface;
 
-/**
- * Profile
- *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\Repository\ProfileRepository")
- */
+#[ORM\Table]
+#[ORM\Entity(repositoryClass: 'App\Repository\ProfileRepository')]
 class Profile extends BaseProfile implements BaseProfileInterface
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="Company", inversedBy="profiles")
-     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $company;
+    #[ORM\ManyToOne(targetEntity: 'Company', inversedBy: 'profiles')]
+    #[ORM\JoinColumn(name: 'company_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?Company $company = null; // Added type hint and nullable
 
-    /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="profile")
-     */
-    private $users;
+    #[ORM\OneToMany(targetEntity: 'User', mappedBy: 'profile')]
+    private Collection $users;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Action", inversedBy="profiles")
-     * @ORM\JoinTable(name="permissions",
-     *   joinColumns={@ORM\JoinColumn(name="profile_id", referencedColumnName="id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="action_id", referencedColumnName="id")}
-     * )
-     */
-    private $actions;
+    #[ORM\ManyToMany(targetEntity: 'Action', inversedBy: 'profiles')]
+    #[ORM\JoinTable(
+        name: 'permissions',
+        joinColumns: [new ORM\JoinColumn(name: 'profile_id', referencedColumnName: 'id')],
+        inverseJoinColumns: [new ORM\JoinColumn(name: 'action_id', referencedColumnName: 'id')]
+    )]
+    private Collection $actions;
 
     public function __construct()
     {
@@ -46,7 +37,7 @@ class Profile extends BaseProfile implements BaseProfileInterface
     /**
      * Implement the abstract method from BaseProfile.
      *
-     * @return Collection|Action[]
+     * @return Collection<int, Action>
      */
     public function getActions(): Collection
     {
@@ -62,7 +53,7 @@ class Profile extends BaseProfile implements BaseProfileInterface
     public function addAction(Action $action): self
     {
         if (!$this->actions->contains($action)) {
-            $this->actions[] = $action;
+            $this->actions->add($action);
         }
 
         return $this;

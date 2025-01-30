@@ -16,7 +16,7 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
-                type: annotation
+                type: attribute
         resolve_target_entities:
             dsarhoya\BaseBundle\Model\EntityMappers\BaseUserInterface: 'App\Entity\User'
             dsarhoya\BaseBundle\Model\EntityMappers\BaseProfileInterface: 'App\Entity\Profile'

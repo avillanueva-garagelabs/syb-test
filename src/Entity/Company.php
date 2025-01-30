@@ -7,23 +7,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use dsarhoya\BaseBundle\Entity\BaseCompany;
 
-/**
-* Company
-*
-* @ORM\Table()
-* @ORM\Entity(repositoryClass="App\Repository\CompanyRepository")
-*/
+#[ORM\Table]
+#[ORM\Entity(repositoryClass: 'App\Repository\CompanyRepository')]
 class Company extends BaseCompany
 {
-    /**
-    * @ORM\OneToMany(targetEntity="Profile", mappedBy="company")
-    */
-    private $profiles;
+    #[ORM\OneToMany(targetEntity: Profile::class, mappedBy: 'company')]
+    private Collection $profiles;
 
-    /**
-    * @ORM\OneToMany(targetEntity="User", mappedBy="company")
-    */
-    private $users;
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'company')]
+    private Collection $users;
 
     public function __construct()
     {
@@ -53,7 +45,6 @@ class Company extends BaseCompany
     public function removeProfile(Profile $profile): static
     {
         if ($this->profiles->removeElement($profile)) {
-            // set the owning side to null (unless already changed)
             if ($profile->getCompany() === $this) {
                 $profile->setCompany(null);
             }
@@ -83,7 +74,6 @@ class Company extends BaseCompany
     public function removeUser(User $user): static
     {
         if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
             if ($user->getCompany() === $this) {
                 $user->setCompany(null);
             }

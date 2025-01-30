@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>{{ news.title }}</h1>
+	<p>{{ news.description }}</p>
+	<img src="{{ asset('uploads/photos/' ~ news.mainPhoto) }}" alt="{{ news.title }}">
+	<p>Publicado el:
+		{{ news.publicationDate|date('d/m/Y H:i') }}</p>
+{% endblock %}

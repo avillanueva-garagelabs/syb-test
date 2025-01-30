@@ -17,7 +17,6 @@ class NewsRepository extends ServiceEntityRepository {
     parent::__construct($registry, News::class);
   }
 
-  // Aquí puedes agregar métodos personalizados para realizar consultas más complejas
   public function findPublishedNews() {
     return $this->createQueryBuilder('n')
       ->where('n.publishedAt <= :now')

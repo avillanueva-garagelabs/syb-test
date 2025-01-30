@@ -1,7 +1,7 @@
 security:
     enable_authenticator_manager: true
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
 
     encoders:
         Symfony\Component\Security\Core\User\User:
@@ -21,7 +21,7 @@ security:
         in_memory:
             memory:
                 users:
-                    dsy: { password: "no-importa", roles: [ 'ROLE_SUPER_ADMIN' ] }
+                    dsy: { password: "no-importa", roles: ["ROLE_SUPER_ADMIN"] }
         user_db:
             entity: { class: App\Entity\User, property: email }
 
@@ -41,7 +41,7 @@ security:
                 path: base_bundle_logout
 
     access_control:
-        - { path: ^/secured/superadmin, roles: [ROLE_SUPER_ADMIN]}
+        - { path: ^/secured/superadmin, roles: [ROLE_SUPER_ADMIN] }
         - { path: ^/secured/user, roles: [ROLE_USER] }
 
 when@dev:

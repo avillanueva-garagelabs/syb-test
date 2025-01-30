@@ -1,41 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}News index{% endblock %}
+{% block title %}Noticias
+{% endblock %}
 
 {% block body %}
-    <h1>News index</h1>
+	<h1>Noticias</h1>
+	<a href="{{ path('news_new') }}">Crear Nueva Noticia</a>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Header</th>
-                <th>Body</th>
-                <th>Footer</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for news in news %}
-            <tr>
-                <td>{{ news.id }}</td>
-                <td>{{ news.title }}</td>
-                <td>{{ news.header }}</td>
-                <td>{{ news.body }}</td>
-                <td>{{ news.footer }}</td>
-                <td>
-                    <a href="{{ path('app_news_show', {'id': news.id}) }}">show</a>
-                    <a href="{{ path('app_news_edit', {'id': news.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_news_new') }}">Create new</a>
+	<table>
+		<thead>
+			<tr>
+				<th>Título</th>
+				<th>Fecha de Publicación</th>
+				<th>Categoría</th>
+				<th>Habilitada</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for newsItem in news %}
+				<tr>
+					<td>{{ newsItem.title }}</td>
+					<td>{{ newsItem.publicationDate|date('d/m/Y H:i') }}</td>
+					<td>{{ newsItem.category.name }}</td>
+					<td>{{ newsItem.enabled ? 'Sí' : 'No' }}</td>
+					<td>
+						<a href="{{ path('news_show', {'id': newsItem.id}) }}">Ver</a>
+						<a href="{{ path('news_edit', {'id': newsItem.id}) }}">Editar</a>
+						<form action="{{ path('news_delete', {'id': newsItem.id}) }}" method="post" onsubmit="return confirm('¿Estás seguro?');">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ newsItem.id) }}">
+							<button type="submit">Eliminar</button>
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 {% endblock %}

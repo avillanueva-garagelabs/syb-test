@@ -9,30 +9,16 @@ use dsarhoya\BaseBundle\Entity\BaseUser;
 use dsarhoya\BaseBundle\Entity\UserKey;
 use dsarhoya\BaseBundle\Model\EntityMappers\BaseUserInterface;
 
-/**
-* User.
-*
-* @ORM\Table()
-* @ORM\Entity(repositoryClass="App\Repository\UserRepository")
-*/
+#[ORM\Table]
+#[ORM\Entity(repositoryClass: 'App\Repository\UserRepository')]
 class User extends BaseUser implements BaseUserInterface
 {
-    /**
-    * @ORM\OneToMany(targetEntity="dsarhoya\BaseBundle\Entity\UserKey", mappedBy="user")
-    */
-    private $keys;
+    #[ORM\OneToMany(targetEntity: UserKey::class, mappedBy: 'user')]
+    private Collection $keys;
 
-    /**
-    * @ORM\ManyToOne(targetEntity="Company", inversedBy="users")
-    * @ORM\JoinColumn(name="company_id", referencedColumnName="id", onDelete="CASCADE")
-    */
-    private $company;
-
-    /**
-    * @ORM\ManyToOne(targetEntity="Profile", inversedBy="users")
-    * @ORM\JoinColumn(name="profile_id", referencedColumnName="id", onDelete="SET NULL")
-    */
-    protected $profile;
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(name: 'company_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?Company $company = null; // Initialize to null
 
     public function __construct()
     {
@@ -61,7 +47,6 @@ class User extends BaseUser implements BaseUserInterface
     public function removeKey(UserKey $key): static
     {
         if ($this->keys->removeElement($key)) {
-            // set the owning side to null (unless already changed)
             if ($key->getUser() === $this) {
                 $key->setUser(null);
             }
@@ -78,18 +63,6 @@ class User extends BaseUser implements BaseUserInterface
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
-
-        return $this;
-    }
-
-    public function getProfile(): ?Profile
-    {
-        return $this->profile;
-    }
-
-    public function setProfile(?Profile $profile): static
-    {
-        $this->profile = $profile;
 
         return $this;
     }

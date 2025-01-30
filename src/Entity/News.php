@@ -2,69 +2,117 @@
 
 namespace App\Entity;
 
-use App\Repository\NewsRepository;
+use DateTime;
+use Doctrine\DBAL\Types\Types;
+
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: NewsRepository::class)]
-class News {
-  #[ORM\Id]
-  #[ORM\GeneratedValue]
-  #[ORM\Column(type: 'integer')]
-  private ?int $id = null;
+#[ORM\Entity(repositoryClass: 'App\Repository\NewsRepository')]
+class News
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-  #[ORM\Column(length: 255)]
-  private ?string $title = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $title = null;
 
-  #[ORM\Column(length: 255, nullable: true)]
-  private ?string $header = null;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTime $publicationDate = null;
 
-  #[ORM\Column(length: 255, nullable: true)]
-  private ?string $body = null;
+    #[ORM\Column(type: 'text')]
+    private ?string $description = null;
 
-  #[ORM\Column(length: 255, nullable: true)]
-  private ?string $footer = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $mainPhoto = null;
 
-  public function getId(): ?int {
-    return $this->id;
-  }
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'news')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
 
-  public function getTitle(): ?string {
-    return $this->title;
-  }
+    #[ORM\Column(type: 'boolean')]
+    private bool $enabled = true;
 
-  public function setTitle(string $title): static {
-    $this->title = $title;
+    public function __construct()
+    {
+        $this->publicationDate = new DateTime();
+    }
 
-    return $this;
-  }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-  public function getHeader(): ?string {
-    return $this->header;
-  }
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
 
-  public function setHeader(?string $header): static {
-    $this->header = $header;
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
-    return $this;
-  }
+        return $this;
+    }
 
-  public function getBody(): ?string {
-    return $this->body;
-  }
+    public function getPublicationDate(): ?DateTime
+    {
+        return $this->publicationDate;
+    }
 
-  public function setBody(?string $body): static {
-    $this->body = $body;
+    public function setPublicationDate(DateTime $publicationDate): self
+    {
+        $this->publicationDate = $publicationDate;
 
-    return $this;
-  }
+        return $this;
+    }
 
-  public function getFooter(): ?string {
-    return $this->footer;
-  }
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
-  public function setFooter(?string $footer): static {
-    $this->footer = $footer;
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
-    return $this;
-  }
+        return $this;
+    }
+
+    public function getMainPhoto(): ?string
+    {
+        return $this->mainPhoto;
+    }
+
+    public function setMainPhoto(string $mainPhoto): self
+    {
+        $this->mainPhoto = $mainPhoto;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
 }

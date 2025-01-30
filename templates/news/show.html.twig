@@ -1,38 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}News{% endblock %}
+{% block title %}Noticia:
+	{{ news.title }}
+{% endblock %}
 
 {% block body %}
-    <h1>News</h1>
+	<h1>Noticia:
+		{{ news.title }}</h1>
+	<p>
+		<strong>Fecha de Publicación:</strong>
+		{{ news.publicationDate|date('d/m/Y H:i') }}</p>
+	<p>
+		<strong>Categoría:</strong>
+		{{ news.category.name }}</p>
+	<p>
+		<strong>Descripción:</strong>
+		{{ news.description }}</p>
+	<p>
+		<strong>Foto Principal:</strong>
+	</p>
+	<img src="{{ asset('uploads/photos/' ~ news.mainPhoto) }}" alt="{{ news.title }}" style="max-width: 300px;">
+	<p>
+		<strong>Habilitada:</strong>
+		{{ news.enabled ? 'Sí' : 'No' }}</p>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ news.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ news.title }}</td>
-            </tr>
-            <tr>
-                <th>Header</th>
-                <td>{{ news.header }}</td>
-            </tr>
-            <tr>
-                <th>Body</th>
-                <td>{{ news.body }}</td>
-            </tr>
-            <tr>
-                <th>Footer</th>
-                <td>{{ news.footer }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_news_index') }}">back to list</a>
-
-    <a href="{{ path('app_news_edit', {'id': news.id}) }}">edit</a>
-
-    {{ include('news/_delete_form.html.twig') }}
+	<a href="{{ path('news_edit', {'id': news.id}) }}">Editar</a>
+	<form action="{{ path('news_delete', {'id': news.id}) }}" method="post" onsubmit="return confirm('¿Estás seguro?');">
+		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ news.id) }}">
+		<button type="submit">Eliminar</button>
+	</form>
+	<a href="{{ path('news_index') }}">Volver a la lista</a>
 {% endblock %}

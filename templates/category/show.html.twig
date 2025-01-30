@@ -1,30 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% block title %}Categoría:
+	{{ category.name }}
+{% endblock %}
 
 {% block body %}
-    <h1>Category</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ category.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ category.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ category.description }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_category_index') }}">back to list</a>
-
-    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
-
-    {{ include('category/_delete_form.html.twig') }}
+	<h1>Categoría:
+		{{ category.name }}</h1>
+	<a href="{{ path('category_edit', {'id': category.id}) }}">Editar</a>
+	<form action="{{ path('category_delete', {'id': category.id}) }}" method="post" onsubmit="return confirm('¿Estás seguro?');">
+		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+		<button type="submit">Eliminar</button>
+	</form>
+	<a href="{{ path('category_index') }}">Volver a la lista</a>
 {% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Noticias de
+		{{ category.name }}</h1>
+	{% for newsItem in news %}
+		<div>
+			<h2>{{ newsItem.title }}</h2>
+			<p>{{ newsItem.description }}</p>
+			<img src="{{ asset('uploads/photos/' ~ newsItem.mainPhoto) }}" alt="{{ newsItem.title }}">
+			<a href="{{ path('news_detail', {'id': newsItem.id}) }}">Leer más</a>
+		</div>
+	{% endfor %}
+{% endblock %}

@@ -1,37 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Categorías
+{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+	<h1>Categorías</h1>
+	<a href="{{ path('category_new') }}">Crear Nueva Categoría</a>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>{{ category.description }}</td>
-                <td>
-                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_category_new') }}">Create new</a>
+	<table>
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for category in categories %}
+				<tr>
+					<td>{{ category.name }}</td>
+					<td>
+						<a href="{{ path('category_show', {'id': category.id}) }}">Ver</a>
+						<a href="{{ path('category_edit', {'id': category.id}) }}">Editar</a>
+						<form action="{{ path('category_delete', {'id': category.id}) }}" method="post" onsubmit="return confirm('¿Estás seguro?');">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+							<button type="submit">Eliminar</button>
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 {% endblock %}

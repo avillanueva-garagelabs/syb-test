@@ -7,17 +7,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use dsarhoya\BaseBundle\Entity\BaseAction;
 
-/**
-* Action
-* @ORM\Table()
-* @ORM\Entity(repositoryClass="App\Repository\ActionRepository")
-*/
+#[ORM\Table]
+#[ORM\Entity(repositoryClass: 'App\Repository\ActionRepository')]
 class Action extends BaseAction
 {
-    /**
-    * @ORM\ManyToMany(targetEntity="Profile", mappedBy="actions")
-    */
-    private $profiles;
+    #[ORM\ManyToMany(targetEntity: 'Profile', mappedBy: 'actions')]
+    private Collection $profiles;
 
     public function __construct()
     {
