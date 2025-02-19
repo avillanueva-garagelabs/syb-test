@@ -30,7 +30,7 @@ class NewsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $photoFile = $form->get('mainPhoto')->getData();
+            /* $photoFile = $form->get('mainPhoto')->getData();
             if ($photoFile) {
                 $newFilename = uniqid() . '.' . $photoFile->guessExtension();
                 $photoFile->move(
@@ -38,7 +38,7 @@ class NewsController extends AbstractController
                     $newFilename
                 );
                 $news->setMainPhoto($newFilename);
-            }
+            } */
 
             $entityManager->persist($news);
             $entityManager->flush();

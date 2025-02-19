@@ -10,8 +10,8 @@
 		<div class="news-item">
 			<h2>{{ news.title }}</h2>
 			<p>{{ news.description }}</p>
-			<img src="{{ asset('uploads/photos/' ~ news.mainPhoto) }}" alt="{{ news.title }}" class="news-image">
-			<a href="{{ path('news_detail', {'id': news.id}) }}" class="read-more">Leer más</a>
+			<img src="{{ fileUrl(news.filePath ~ '/' ~ news.mainPhoto, {signed: true}) }}" alt="{{ news.title }}" class="news-image">
+			{# <a href="{{ path('news_detail', {'id': news.id}) }}" class="read-more">Leer más</a> #}
 		</div>
 	{% else %}
 		<p>No hay noticias disponibles.</p>

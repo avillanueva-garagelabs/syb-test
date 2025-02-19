@@ -1,0 +1,8 @@
+dsarhoya_dsy_files:
+  storage_type: s3
+  s3:
+    credentials:
+      key: "%env(AWS_ACCESS_KEY)%"
+      secret: "%env(AWS_SECRET_KEY)%"
+      bucket: "%env(AWS_BUCKET)%"
+      region: "%env(AWS_REGION)%"

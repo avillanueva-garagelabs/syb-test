@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/posts",
+    "queryParameters": {
+      "category_name": {
+        "matches": "sports"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "[{\"title\": \"Noticia 1\", \"date\": \"2023-10-01\", \"summary\": \"Resumen 1\", \"body\": \"Cuerpo 1\"}]",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

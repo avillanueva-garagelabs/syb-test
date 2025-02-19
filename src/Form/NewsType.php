@@ -29,11 +29,11 @@ class NewsType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Descripción',
             ])
-            ->add('mainPhoto', FileType::class, [
+            /* ->add('mainPhoto', FileType::class, [
                 'label' => 'Foto Principal',
                 'mapped' => false, // No está mapeado directamente a la entidad
                 'required' => false,
-            ])
+            ]) */
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
@@ -42,6 +42,11 @@ class NewsType extends AbstractType
             ->add('enabled', CheckboxType::class, [
                 'label' => 'Habilitada',
                 'required' => false,
+            ])
+            ->add('file', FileType::class, [
+                'label' => 'Foto principal',
+                /* 'is_image' => true,
+                'file_url_options' => ['signed' => true], */
             ]);
     }
 

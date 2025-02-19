@@ -1,0 +1,7 @@
+api_news:
+    resource: "../../src/Controller/Api/NewsController.php"
+    type: annotation
+
+api_categories:
+    resource: "../../src/Controller/Api/CategoryController.php"
+    type: annotation

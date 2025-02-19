@@ -5,6 +5,9 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\CategoryRepository')]
 class Category
@@ -12,15 +15,25 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[SerializedName('id')]
+    #[Groups(['category_list', 'category_detail'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[SerializedName('name')]
+    #[Groups(['category_list', 'category_detail'])]
+    #[Assert\NotBlank(message: 'El nombre es obligatorio.')]
+    #[Assert\Length(max: 255, maxMessage: 'El nombre no puede superar los 255 caracteres.')]
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: News::class, mappedBy: 'category')]
+    #[Groups(['r_category_news'])]
     private Collection $news;
 
     #[ORM\Column(length: 255)]
+    #[SerializedName('description')]
+    #[Groups(['category_detail'])]
+    #[Assert\NotBlank(message: 'La descripción es obligatoria.')]
     private ?string $description = null;
 
     public function __construct()
