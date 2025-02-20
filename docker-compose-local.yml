@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    # build: docker/php-dev
+    # environment:
+    #   -
+    # volumes:
+    #   - /home/mati/.ssh:/root/.ssh
+    #   - ./docker/php-dev/dsy.ini:/usr/local/etc/php/conf.d/dsy.ini
+    #   - ./docker/php-dev/zdsy.conf:/usr/local/etc/php-fpm.d/zdsy.conf
+    #   - ./docker/php-dev/dsy.conf:/etc/supervisor/conf.d/dsy.conf
+    #   - ./docker/php-dev/dsycron:/rootcrontab
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -7,10 +7,6 @@
         {
             "type": "composer",
             "url": "https://public_packages.dsy.cl"
-        },
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:dsarhoya/dsy-files-bundle.git"
         }
     ],
     "require": {

@@ -1,0 +1,9 @@
+FROM dsarhoya/app-php-8.1-alpine:3
+COPY . /app
+WORKDIR /app
+COPY docker/app/dsy.ini $PHP_INI_DIR/conf.d
+COPY docker/app/zdsy-prod.conf /usr/local/etc/php-fpm.d
+ADD docker/app/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+EXPOSE 9000
+ENTRYPOINT [ "/entrypoint.sh" ]

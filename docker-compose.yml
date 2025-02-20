@@ -1,9 +1,24 @@
-version: '3.8'
-
+version: '3'
 services:
-  wiremock:
-    image: wiremock/wiremock:2.32.0
-    ports:
-      - "8080:8080"
+  app:
+    container_name: ${COMPOSE_PROJECT_NAME}.app
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile.prod
     volumes:
-      - ./wiremock:/home/wiremock
+      - .:/app
+      - ./docker/app/dsy.ini:/usr/local/etc/php/conf.d/dsy.ini
+      # - ./docker/php/dsycron:/dsycron
+    working_dir: /app
+    cap_add:
+      - SYS_PTRACE
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}.nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile.prod
+    volumes:
+      - ./public:/app/public
+      - ./docker/logs/nginx:/app/docker/logs/nginx
+    ports:
+      - "${COMPOSE_PORT}:80"

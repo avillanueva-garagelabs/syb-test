@@ -1,0 +1,24 @@
+version: '3'
+services:
+  adminer:
+    image: adminer:4.7
+    restart: unless-stopped
+    container_name: adminer
+    volumes:
+      - ./adminer:/adminer
+    ports:
+      - "8010:8080"
+  mariadb104:
+    image: mariadb:10.4
+    container_name: test.mariadb104
+    restart: unless-stopped
+    volumes:
+      - ./db/mariadb104:/var/lib/mysql
+      - ./db/dumps:/dumps
+      - ./db/conf/mariadb.10.4:/etc/mysql/mariadb.conf.d
+      - ./db/slow-query/mariadb.10.4:/slow-query
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - ALLOW_EMPTY_PASSWORD=no
+    ports:
+      - "3307:3306"
