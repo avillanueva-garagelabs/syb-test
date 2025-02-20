@@ -19,7 +19,7 @@
 	<p>
 		<strong>Foto Principal:</strong>
 	</p>
-	<img src="{{ asset('uploads/photos/' ~ news.mainPhoto) }}" alt="{{ news.title }}" style="max-width: 300px;">
+	<img src="{{ fileUrl(news.filePath ~ '/' ~ news.mainPhoto, {signed: true}) }}" alt="{{ news.title }}" class="news-image">
 	<p>
 		<strong>Habilitada:</strong>
 		{{ news.enabled ? 'Sí' : 'No' }}</p>

@@ -6,7 +6,7 @@
 {% block body %}
 	<h1>Panel de Administración</h1>
 	<p>Bienvenido,
-		{{ app.user.email }}.</p>
+		{{ app.user }}.</p>
 
 	<ul>
 		<li><ahref="{{ path('admin_category') }}">Gestionar Categorías</a></li>

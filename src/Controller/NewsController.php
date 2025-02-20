@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/news')]
+#[Route('/secured/news')]
 class NewsController extends AbstractController
 {
     #[Route('/', name: 'news_index', methods: ['GET'])]
@@ -30,16 +30,6 @@ class NewsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* $photoFile = $form->get('mainPhoto')->getData();
-            if ($photoFile) {
-                $newFilename = uniqid() . '.' . $photoFile->guessExtension();
-                $photoFile->move(
-                    $this->getParameter('photos_directory'),
-                    $newFilename
-                );
-                $news->setMainPhoto($newFilename);
-            } */
-
             $entityManager->persist($news);
             $entityManager->flush();
 
@@ -53,16 +43,28 @@ class NewsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'news_show', methods: ['GET'])]
-    public function show(News $news): Response
+    public function show(NewsRepository $newsRepository, int $id): Response
     {
+        $news = $newsRepository->find($id);
+
+        if (!$news) {
+            throw $this->createNotFoundException('Noticia no encontrada');
+        }
+
         return $this->render('news/show.html.twig', [
             'news' => $news,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'news_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, News $news, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, NewsRepository $newsRepository, int $id, EntityManagerInterface $entityManager): Response
     {
+        $news = $newsRepository->find($id);
+
+        if (!$news) {
+            throw $this->createNotFoundException('Noticia no encontrada');
+        }
+
         $form = $this->createForm(NewsType::class, $news);
         $form->handleRequest($request);
 
@@ -79,20 +81,18 @@ class NewsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'news_delete', methods: ['POST'])]
-    public function delete(Request $request, News $news, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, NewsRepository $newsRepository, int $id, EntityManagerInterface $entityManager): Response
     {
+        $news = $newsRepository->find($id);
+
+        if (!$news) {
+            throw $this->createNotFoundException('Noticia no encontrada');
+        }
         if ($this->isCsrfTokenValid('delete' . $news->getId(), $request->request->get('_token'))) {
             $entityManager->remove($news);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('news_index');
-    }
-
-    public function detail(News $news): Response
-    {
-        return $this->render('news/detail.html.twig', [
-            'news' => $news,
-        ]);
     }
 }
