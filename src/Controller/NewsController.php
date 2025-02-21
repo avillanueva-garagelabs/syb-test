@@ -10,10 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use dsarhoya\DSYFilesBundle\Services\DSYFilesService as FileService;
 
 #[Route('/secured/news')]
 class NewsController extends AbstractController
 {
+    private FileService $fileService;
+
+    public function __construct(
+        FileService $fileService
+    ) {
+        $this->fileService = $fileService;
+    }
     #[Route('/', name: 'news_index', methods: ['GET'])]
     public function index(NewsRepository $newsRepository): Response
     {
@@ -88,6 +96,11 @@ class NewsController extends AbstractController
         if (!$news) {
             throw $this->createNotFoundException('Noticia no encontrada');
         }
+
+        if ($news->getMainPhoto()) {
+            $this->fileService->deleteAWSFile($news->getMainPhoto());
+        }
+
         if ($this->isCsrfTokenValid('delete' . $news->getId(), $request->request->get('_token'))) {
             $entityManager->remove($news);
             $entityManager->flush();

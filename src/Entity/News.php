@@ -39,8 +39,6 @@ class News implements IFileEnabledEntity
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[SerializedName('mainPhoto')]
-    #[Groups(['news_detail'])]
     private ?string $mainPhoto = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'news')]
@@ -56,6 +54,7 @@ class News implements IFileEnabledEntity
     private bool $enabled = true;
 
     private ?File $file = null;
+
     private ?string $mainPhotoUrl = null;
 
     public function __construct()

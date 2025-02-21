@@ -30,6 +30,7 @@ admin_news:
   path: /secured/user/news
   controller: App\Controller\NewsController::index
   methods: GET
+  
 
 api:
   resource: "routes/api.yaml"

@@ -16,17 +16,14 @@ use JMS\Serializer\SerializerInterface;
 #[Route("/news")]
 class NewsController extends ApiBaseController
 {
-  private ValidatorInterface $validator;
   private ManagerRegistry $doctrine;
   private FileService $fileService;
 
   public function __construct(
-    ValidatorInterface $validator,
     ManagerRegistry $doctrine,
     FileService $fileService,
     SerializerInterface $serializer
   ) {
-    $this->validator = $validator;
     $this->doctrine = $doctrine;
     $this->fileService = $fileService;
     parent::__construct($serializer);
@@ -40,8 +37,14 @@ class NewsController extends ApiBaseController
   }
 
   #[Route("/{id}", name: "api_news_detail", methods: ["GET"])]
-  public function detail(News $news): Response
+  public function detail(NewsRepository $newsRepository, int $id): Response
   {
+    $news = $newsRepository->find($id);
+
+    if (!$news) {
+      throw $this->createNotFoundException('Noticia no encontrada');
+    }
+
     return $this->serializedResponse($news, ['news_detail']);
   }
 
@@ -71,8 +74,9 @@ class NewsController extends ApiBaseController
   }
 
   #[Route("/{id}", name: "api_news_update", methods: ["PUT"])]
-  public function update(News $news, Request $request): Response
+  public function update(Request $request, NewsRepository $newsRepository, int $id): Response
   {
+    $news = $newsRepository->find($id);
     $form = $this->createForm(NewsType::class, $news);
     $form->submit(json_decode($request->getContent(), true));
 
@@ -98,8 +102,9 @@ class NewsController extends ApiBaseController
   }
 
   #[Route("/{id}", name: "api_news_delete", methods: ["DELETE"])]
-  public function delete(News $news): Response
+  public function delete(NewsRepository $newsRepository, int $id): Response
   {
+    $news = $newsRepository->find($id);
     if ($news->getMainPhoto()) {
       $this->fileService->deleteAWSFile($news->getMainPhoto());
     }

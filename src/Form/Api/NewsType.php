@@ -3,6 +3,7 @@
 namespace App\Form\Api;
 
 use App\Entity\News;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -25,6 +26,7 @@ class NewsType extends AbstractType
         'required' => false,
         'widget' => 'single_text', 
         'input' => 'datetime',
+        'empty_data' => new DateTime(),
       ])
       ->add('description', TextareaType::class, [
         'required' => true,

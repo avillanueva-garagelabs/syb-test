@@ -6,6 +6,7 @@ use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use App\Entity\News;
 use dsarhoya\DSYFilesBundle\Services\DSYFilesService;
+use JMS\Serializer\Metadata\StaticPropertyMetadata;
 
 class NewsSerializationSubscriber implements EventSubscriberInterface
 {
@@ -29,14 +30,19 @@ class NewsSerializationSubscriber implements EventSubscriberInterface
 
     public function onPostSerialize(ObjectEvent $event)
     {
-        $news = $event->getObject();
+        $entity = $event->getObject();
+        /** @var JsonSerializationVisitor $visitor */
+        $visitor = $event->getVisitor();
 
-        if ($news instanceof News) {
-            $fileKey = $news->getFileKey();
-            if ($fileKey) {
-                $fileUrl = $this->fileService->getObjectUrl($fileKey);
-                $news->setMainPhotoUrl($fileUrl);
+        if ($entity instanceof News) {
+            if (null !== $entity->getMainPhoto()) {
+                $this->addProperty($visitor, 'image_key_url', $this->fileService->fileUrl('news/' . $entity->getMainPhoto(), ['signed' => true]));
             }
         }
+    }
+
+    private function addProperty($visitor, $propertyName, $propertyValue)
+    {
+        $visitor->visitProperty(new StaticPropertyMetadata('', $propertyName, $propertyValue), $propertyValue);
     }
 }
