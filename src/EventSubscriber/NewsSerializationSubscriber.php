@@ -36,7 +36,7 @@ class NewsSerializationSubscriber implements EventSubscriberInterface
 
         if ($entity instanceof News) {
             if (null !== $entity->getMainPhoto()) {
-                $this->addProperty($visitor, 'image_key_url', $this->fileService->fileUrl('news/' . $entity->getMainPhoto(), ['signed' => true]));
+                $this->addProperty($visitor, 'image_key_url', $this->fileService->fileUrl($entity->getFileUrl(), ['signed' => true]));
             }
         }
     }

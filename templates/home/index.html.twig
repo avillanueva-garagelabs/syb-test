@@ -10,7 +10,7 @@
 		<div class="news-item">
 			<h2>{{ news.title }}</h2>
 			<p>{{ news.description }}</p>
-			<img src="{{ fileUrl(news.filePath ~ '/' ~ news.mainPhoto, {signed: true}) }}" alt="{{ news.title }}" class="news-image">
+			<img src="{{ fileUrl(news.getFileUrl, {signed: true}) }}" alt="{{ news.title }}" class="news-image">
 		</div>
 	{% else %}
 		<p>No hay noticias disponibles.</p>

@@ -179,4 +179,9 @@ class News implements IFileEnabledEntity
         $this->mainPhotoUrl = $mainPhotoUrl;
         return $this;
     }
+
+    public function getFileUrl(): ?string
+    {
+        return $this->getFilePath() . '/' . $this->getMainPhoto();
+    }
 }
