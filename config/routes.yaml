@@ -12,25 +12,13 @@ app_login:
 app_logout:
   path: /logout
   methods: GET
-
-# Rutas protegidas del administrador
-admin_dashboard:
-  path: /admin
-  controller: App\Controller\AdminController::dashboard
-  methods: GET
-  defaults:
-    _locale: es
-
-admin_category:
-  path: /secured/user/category
-  controller: App\Controller\CategoryController::index
-  methods: GET
-
-admin_news:
-  path: /secured/user/news
-  controller: App\Controller\NewsController::index
-  methods: GET
   
+secured:
+    resource: '../src/Controller/Secured/'
+    type: annotation
+    prefix: /secured
+
+# API
 
 api:
   resource: "routes/api.yaml"

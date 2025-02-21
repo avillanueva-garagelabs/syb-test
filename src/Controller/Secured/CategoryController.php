@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Secured;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/secured/category')]
+#[Route('/category')]
 class CategoryController extends AbstractController
 {
     #[Route('/', name: 'category_index', methods: ['GET'])]
@@ -44,16 +44,18 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'category_show', methods: ['GET'])]
-    public function show(Category $category): Response
+    public function show(CategoryRepository $categoryRepository, int $id): Response
     {
+        $category = $categoryRepository->find($id);
         return $this->render('category/show.html.twig', [
             'category' => $category,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'category_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Category $category, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, CategoryRepository $categoryRepository, int $id, EntityManagerInterface $entityManager): Response
     {
+        $category = $categoryRepository->find($id);
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
@@ -70,8 +72,9 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'category_delete', methods: ['POST'])]
-    public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, CategoryRepository $categoryRepository, int $id, EntityManagerInterface $entityManager): Response
     {
+        $category = $categoryRepository->find($id);
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $entityManager->remove($category);
             $entityManager->flush();
