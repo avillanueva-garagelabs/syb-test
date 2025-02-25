@@ -1,3 +1,6 @@
+parameters:
+    authenticator: dsarhoya\BaseBundle\Security\Guard\LoginFormAuthenticator
+    
 security:
     enable_authenticator_manager: true
     password_hashers:

@@ -17,7 +17,7 @@ class NewsSerializationSubscriber implements EventSubscriberInterface
         $this->fileService = $fileService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             [

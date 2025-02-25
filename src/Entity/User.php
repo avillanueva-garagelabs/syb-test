@@ -13,6 +13,9 @@ use dsarhoya\BaseBundle\Model\EntityMappers\BaseUserInterface;
 #[ORM\Entity(repositoryClass: 'App\Repository\UserRepository')]
 class User extends BaseUser implements BaseUserInterface
 {
+    public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    public const ROLE_USER = 'ROLE_USER';
+
     #[ORM\OneToMany(targetEntity: UserKey::class, mappedBy: 'user')]
     private Collection $keys;
 
