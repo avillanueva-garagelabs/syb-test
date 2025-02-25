@@ -9,7 +9,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use dsarhoya\DSYFilesBundle\Services\DSYFilesService as FileService;
 use JMS\Serializer\SerializerInterface;
 
@@ -53,16 +52,18 @@ class NewsController extends ApiBaseController
   {
     $news = new News();
     $form = $this->createForm(NewsType::class, $news);
-    $form->submit(json_decode($request->getContent(), true));
+    $form->submit(array_merge($request->request->all(), $request->files->all()));
 
     if (!$form->isValid()) {
       return $this->errorResponse((string) $form->getErrors(true, false), Response::HTTP_BAD_REQUEST);
     }
 
-    if ($news->getFile()) {
-      $fileService = $this->container->get('dsarhoya.files');
+    $file = $request->files->get('file');
+
+    if ($file) {
+      $news->setFile($file);
       $fileKey = sprintf('%s/%s', $news->getFilePath(), uniqid() . '.' . $news->getFile()->guessExtension());
-      $fileService->AWSFileWithFileAndKey($news->getFile(), $fileKey, $news->getFileProperties());
+      $this->fileService->AWSFileWithFileAndKey($news->getFile(), $fileKey, $news->getFileProperties());
       $news->setMainPhoto($fileKey);
     }
 

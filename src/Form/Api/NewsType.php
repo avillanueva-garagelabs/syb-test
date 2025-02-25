@@ -2,8 +2,10 @@
 
 namespace App\Form\Api;
 
+use App\Entity\Category;
 use App\Entity\News;
 use DateTime;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -22,22 +24,20 @@ class NewsType extends AbstractType
       ->add('title', TextType::class, [
         'required' => true,
       ])
-      ->add('publicationDate', DateTimeType::class, [
-        'required' => false,
-        'widget' => 'single_text', 
-        'input' => 'datetime',
-        'empty_data' => new DateTime(),
-      ])
       ->add('description', TextareaType::class, [
         'required' => true,
       ])
+      ->add('category', EntityType::class, [
+        'required' => false,
+        'class' => Category::class,
+      ])
       ->add('file', FileType::class, [
         'required' => false,
-        'mapped' => false, 
+        'mapped' => false,
         'constraints' => [
           new File([
-            'maxSize' => '5M', 
-            'mimeTypes' => [ 
+            'maxSize' => '5M',
+            'mimeTypes' => [
               'image/jpeg',
               'image/png',
               'image/gif',
@@ -55,7 +55,7 @@ class NewsType extends AbstractType
   {
     $resolver->setDefaults([
       'data_class' => News::class,
-      'csrf_protection' => false, 
+      'csrf_protection' => false,
     ]);
   }
 }

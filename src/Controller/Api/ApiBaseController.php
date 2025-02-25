@@ -29,8 +29,12 @@ class ApiBaseController extends AbstractController
   protected function errorResponse($errors, int $statusCode): Response
   {
     $errorMessages = [];
-    foreach ($errors as $error) {
-      $errorMessages[] = $error->getMessage();
+    if (is_array($errors)) {
+      foreach ($errors as $error) {
+        $errorMessages[] = $error->getMessage();
+      }
+    } else {
+      $errorMessages = $errors;
     }
 
     $data = [

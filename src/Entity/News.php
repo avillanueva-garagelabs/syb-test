@@ -60,6 +60,7 @@ class News implements IFileEnabledEntity
     public function __construct()
     {
         $this->publicationDate = new DateTime();
+        //dd($this->publicationDate);
     }
 
     public function getId(): ?int
@@ -89,6 +90,14 @@ class News implements IFileEnabledEntity
         $this->publicationDate = $publicationDate;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setPublicationDateOnPersist(): void
+    {
+        if ($this->publicationDate === null) {
+            $this->publicationDate = new DateTime();
+        }
     }
 
     public function getDescription(): ?string
