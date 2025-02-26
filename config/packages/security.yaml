@@ -46,8 +46,8 @@ security:
     access_control:
         - { path: ^/secured/superadmin, roles: [ROLE_SUPER_ADMIN] }
         - { path: ^/secured/user, roles: [ROLE_USER] }
-        - { path: ^/secured/news, roles: [ROLE_SUPER_ADMIN] }
-        - { path: ^/secured/category, roles: [ROLE_SUPER_ADMIN] }
+        - { path: ^/secured/news, roles: [ROLE_USER] }
+        - { path: ^/secured/category, roles: [ROLE_USER] }
 
 when@dev:
     parameters:
