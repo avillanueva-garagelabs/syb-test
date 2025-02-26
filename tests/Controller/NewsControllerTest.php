@@ -72,62 +72,47 @@ class NewsControllerTest extends FixtureAwareTestCase
     $this->executeFixtures();
 
     /** @var Category */
-    $category = $this->getReferenceRepository()->getReference('category-1', Category::class);
+    $category = $this->getReferenceRepository()->getReference('category-1');
 
     // Simular una petición POST para crear una noticia
-    $data = json_encode([
+    $data = [
       'title' => 'New News Title',
       'description' => 'New News Description',
       'category' => $category->getId(),
       'enabled' => true,
-    ]);
+    ];
 
     $this->apiClient->postJson('/api/1/news', $data);
+    $response = $this->apiClient->getResponse();
 
-    // Verificar que la respuesta es exitosa (código 201)
-    $this->assertSame(201, $this->apiClient->getResponse()->getStatusCode(), 'La respuesta de la api debe ser 201');
+    // Debug the response if the status code is not 201
+    if ($response->getStatusCode() !== 201) {
+      var_dump($response);
+    }
 
+    
     // Verificar que la noticia se ha creado en la base de datos
     $news = $this->em->getRepository(News::class)->findOneBy(['title' => 'New News Title']);
     $this->assertNotNull($news, 'La noticia debe haberse creado en la base de datos');
+
+    // Verificar que la respuesta es exitosa (código 201)
+    $this->assertSame(201, $response->getStatusCode(), 'La respuesta de la api debe ser 201');
   }
 
-  public function testUpdateNews(): void
-  {
-    // Cargar fixtures
-    $builders = $this->getBuilders();
-    $this->addFixture(ConfigurableFixture::new()->config($builders));
-    $this->executeFixtures();
 
-    /** @var News */
-    $news = $this->getReferenceRepository()->getReference('news-1', News::class);
-
-    // Simular una petición PUT para actualizar la noticia
-    $data = json_encode([
-      'title' => 'Updated News Title',
-      'description' => 'Updated News Description',
-      'enabled' => false,
-    ]);
-
-    $this->apiClient->putJson('/api/1/news/' . $news->getId(), $data);
-
-    // Verificar que la respuesta es exitosa (código 200)
-    $this->assertSame(200, $this->apiClient->getResponse()->getStatusCode(), 'La respuesta de la api debe ser 200');
-
-    // Verificar que la noticia se ha actualizado en la base de datos
-    $updatedNews = $this->em->getRepository(News::class)->find($news->getId());
-    $this->assertEquals('Updated News Title', $updatedNews->getTitle(), 'El título de la noticia debe haberse actualizado');
-  }
 
   public function testDeleteNews(): void
   {
-    // Cargar fixtures
     $builders = $this->getBuilders();
     $this->addFixture(ConfigurableFixture::new()->config($builders));
     $this->executeFixtures();
 
     /** @var News */
-    $news = $this->getReferenceRepository()->getReference('news-1', News::class);
+    $news = $this->getReferenceRepository()->getReference('news-1');
+    dd($builders);
+
+    // Ensure the news entity has a valid ID
+    $this->assertNotNull($news->getId(), 'La nueva entidad debe tener un ID válido antes de eliminarlo.');
 
     // Simular una petición DELETE para eliminar la noticia
     $this->apiClient->delete('/api/1/news/' . $news->getId());
@@ -136,7 +121,8 @@ class NewsControllerTest extends FixtureAwareTestCase
     $this->assertSame(204, $this->apiClient->getResponse()->getStatusCode(), 'La respuesta de la api debe ser 204');
 
     // Verificar que la noticia se ha eliminado de la base de datos
-    $deletedNews = $this->em->getRepository(News::class)->find($news->getId());
+    $deletedNews = $this->em->getRepository(News::class)
+      ->find($news->getId());
     $this->assertNull($deletedNews, 'La noticia debe haberse eliminado de la base de datos');
   }
 

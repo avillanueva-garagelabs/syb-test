@@ -18,13 +18,13 @@ class DSYClient
     return $this->client->request(
       'POST',
       $url,
-      [],
+      $json,
       [],
       array_merge($headers, [
         'CONTENT_TYPE' => 'application/json',
         'HTTP_X_Requested-With' => 'XMLHttpRequest',
       ]),
-      $json
+      '',
     );
   }
 
