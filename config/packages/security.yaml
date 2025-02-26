@@ -40,6 +40,8 @@ security:
                 authenticators:
                     - "%authenticator%"
             provider: chain_provider
+            form_login:
+                default_target_path: /
             logout:
                 path: base_bundle_logout
 

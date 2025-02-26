@@ -5,7 +5,7 @@ dsarhoya_base:
   serviceName: "Diario Online"
   routes:
     ROLE_SUPER_ADMIN: { route: base_bundle_superadmin_default_index }
-    ROLE_USER: { route: indexUser }
+    ROLE_USER: { route: home }
   uniqueUser: false
   stickyUrls: false
   classes:
